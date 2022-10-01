@@ -1,0 +1,5 @@
+
+ADD TO PROJECT THIS FILES
+
+https://github.com/Nolkaloid/godot-youtube-dl/releases/latest/download/ffmpeg.exe
+https://github.com/Nolkaloid/godot-youtube-dl/releases/latest/download/ffprobe.exe

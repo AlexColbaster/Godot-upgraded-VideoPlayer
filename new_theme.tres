@@ -1,0 +1,17 @@
+[gd_resource type="Theme" load_steps=5 format=2]
+
+[ext_resource path="res://pictures/scroll3.png" type="Texture" id=2]
+[ext_resource path="res://pictures/scroll2.png" type="Texture" id=3]
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 12, 12 )
+
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 12, 12 )
+
+[resource]
+HSlider/styles/grabber_area = SubResource( 5 )
+HSlider/styles/grabber_area_highlight = SubResource( 5 )
+HSlider/styles/slider = SubResource( 6 )
