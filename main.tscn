@@ -91,6 +91,7 @@ margin_top = 40.0
 margin_right = 1280.0
 margin_bottom = 760.0
 mouse_filter = 2
+autoplay = true
 
 [node name="panel" type="Panel" parent="videoplayer"]
 margin_top = -40.0

@@ -11,8 +11,14 @@ func _ready():
 	$videoplayer.stream = video
 	$videoplayer.play()
 	# расчёт длины видео в секундах
-	OS.execute("ffprobe", ['-i', 'normal.webm', '-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv="p=0"'], true, stdout)
+	OS.execute("ffprobe", ['-i', 'normal.webm', 
+	'-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv="p=0"'], true, stdout)
 	duration = int(stdout[0])
+
+func _on_pause_pressed():
+	$videoplayer.paused = !$videoplayer.paused
+	if $videoplayer.paused: $animations.play("pause")
+	else: $animations.play_backwards("pause")
 
 # движение окна
 var mouse_offset
@@ -24,14 +30,7 @@ func _process(delta):
 	if $move.pressed and mouse_offset: OS.window_position += get_local_mouse_position() - mouse_offset
 	# движение линии видео со временем
 	if duration and not Input.is_action_pressed("mouse"):
-		print($videoplayer.stream_position)
-		print($videoplayer.stream_position / duration)
 		$videoplayer/panel/line.value = start_value + $videoplayer.stream_position / duration
-
-func _on_pause_pressed():
-	$videoplayer.paused = !$videoplayer.paused
-	if $videoplayer.paused: $animations.play("pause")
-	else: $animations.play_backwards("pause")
 
 func _on_close_pressed():
 	get_tree().quit()
@@ -47,23 +46,27 @@ var time_start_secs
 var start_value = 0
 func _on_line_gui_input(event):
 	if event is InputEventMouseButton and duration:
-		# расчёт таймкода, который кликнули на линии
+		# запомним новое состояние (пригодится потом)
 		value = $videoplayer/panel/line.value
 		start_value = value
+		# получим весь таймкод в секундах
 		seconds = int(value * duration)
+		# отделим от секунд минуты
 		time_start_hour = int(seconds / 3600)
 		seconds -= time_start_hour * 3600
+		# отделим от секунд часы
 		time_start_min = int(seconds / 60)
 		seconds -= time_start_min * 60
 		time_start_secs = seconds
 		rewind(str(time_start_hour), str(time_start_min), str(time_start_secs))
 
 func rewind(time_start_hour, time_start_min, time_start_secs):
-	OS.execute("ffmpeg", ['-ss', time_start_hour+':'+time_start_min+':'+time_start_secs, '-to', '999:0:0', '-i', 'normal.webm', '-c', 'copy', 'cutted.webm', '-y'], true, stdout)
+	OS.execute("ffmpeg", ['-ss', time_start_hour+':'+time_start_min+':'+time_start_secs, 
+	'-to', '999:0:0', '-i', 'normal.webm', '-c', 'copy', 'cutted.webm', '-y'], true, stdout)
 	video = VideoStreamWebm.new()
 	video.set_file('cutted.webm')
 	$videoplayer.stream = video
 	$videoplayer.play()
-	
+
 
 
