@@ -3,12 +3,7 @@ extends Control
 
 var stdout = []
 var duration
-var video
 func _ready():
-	# загрузка видео
-	video = VideoStreamWebm.new()
-	video.set_file('normal.webm')
-	$videoplayer.stream = video
 	# расчёт длины видео в секундах
 	OS.execute("ffprobe", ['-i', 'normal.webm', 
 	'-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv="p=0"'], true, stdout)
@@ -59,6 +54,7 @@ func _on_line_gui_input(event):
 		time_start_secs = seconds
 		rewind(str(time_start_hour), str(time_start_min), str(time_start_secs))
 
+var video
 func rewind(time_start_hour, time_start_min, time_start_secs):
 	OS.execute("ffmpeg", ['-ss', time_start_hour+':'+time_start_min+':'+time_start_secs, 
 	'-to', '999:0:0', '-i', 'normal.webm', '-c', 'copy', 'cutted.webm', '-y'], true, stdout)
