@@ -3,9 +3,10 @@ extends Control
 
 var stdout = []
 var duration
+var video
 func _ready():
 	# загрузка видео
-	var video = VideoStreamWebm.new()
+	video = VideoStreamWebm.new()
 	video.set_file('normal.webm')
 	$videoplayer.stream = video
 	$videoplayer.play()
@@ -23,6 +24,8 @@ func _process(delta):
 	if $move.pressed and mouse_offset: OS.window_position += get_local_mouse_position() - mouse_offset
 	# движение линии видео со временем
 	if duration and not Input.is_action_pressed("mouse"):
+		print($videoplayer.stream_position)
+		print($videoplayer.stream_position / duration)
 		$videoplayer/panel/line.value = start_value + $videoplayer.stream_position / duration
 
 func _on_pause_pressed():
@@ -57,7 +60,7 @@ func _on_line_gui_input(event):
 
 func rewind(time_start_hour, time_start_min, time_start_secs):
 	OS.execute("ffmpeg", ['-ss', time_start_hour+':'+time_start_min+':'+time_start_secs, '-to', '999:0:0', '-i', 'normal.webm', '-c', 'copy', 'cutted.webm', '-y'], true, stdout)
-	var video = VideoStreamWebm.new()
+	video = VideoStreamWebm.new()
 	video.set_file('cutted.webm')
 	$videoplayer.stream = video
 	$videoplayer.play()

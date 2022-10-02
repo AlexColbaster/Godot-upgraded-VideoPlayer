@@ -128,7 +128,7 @@ custom_icons/grabber_disabled = ExtResource( 4 )
 custom_icons/grabber_highlight = ExtResource( 4 )
 custom_icons/grabber = ExtResource( 4 )
 max_value = 1.0
-step = 0.01
+step = 0.0
 
 [node name="minimize" type="TextureButton" parent="videoplayer/panel"]
 margin_left = 1180.0
