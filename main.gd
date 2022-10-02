@@ -9,7 +9,6 @@ func _ready():
 	video = VideoStreamWebm.new()
 	video.set_file('normal.webm')
 	$videoplayer.stream = video
-	$videoplayer.play()
 	# расчёт длины видео в секундах
 	OS.execute("ffprobe", ['-i', 'normal.webm', 
 	'-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv="p=0"'], true, stdout)
